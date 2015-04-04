@@ -1,0 +1,256 @@
+\documentclass[a4paper, 12pt]{article}		% general format
+
+%%%% Charset
+\usepackage{cmap}							% make PDF files searchable and copyable
+\usepackage[utf8]{inputenc}					% accept different input encodings
+\usepackage[T2A]{fontenc}					% russian font
+\usepackage[russian]{babel}					% multilingual support (T2A)
+
+%%%% Graphics
+\usepackage[dvipsnames]{xcolor}			% driver-independent color extensions
+\usepackage{graphicx}						% enhanced support for graphics
+\usepackage{wrapfig}						% produces figures which text can flow around
+
+%%%% Math
+\usepackage{amsmath}						% American Mathematical Society (AMS) math facilities
+\usepackage{amsfonts}						% fonts from the AMS
+\usepackage{amssymb}						% additional math symbols
+
+%%%% Typograpy (don't forget about cm-super)
+\usepackage{microtype}						% subliminal refinements towards typographical perfection
+\linespread{1.3}							% line spacing
+\usepackage[left=2.5cm, right=1.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\setlength{\parindent}{0pt}					% we don't want any paragraph indentation
+\usepackage{parskip}						% not big distance between paragraphs
+
+%%%% Tables
+\usepackage{tabularx}						% Normal tables
+\usepackage{multirow}						% for tabular
+\usepackage{hhline}							% for tabular
+
+%%%% Graph
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+%%%% Other
+\usepackage{url}							% verbatim with URL-sensitive line breaks
+%------------------------------------------------------------------------------
+
+\begin{document}
+
+\input{titlepage}
+\tableofcontents
+
+%------------------------------------------------------------------------------
+%\input{introduction}
+\newpage
+\section*{Введение}
+\addcontentsline{toc}{section}{Введение}
+
+%------------------------------------------------------------------------------
+
+\newpage
+\section{Варианты формализации многокритериальной задачи и их решение с использованием Optimization Toolbox  системы Matlab.}
+% Вариант 26
+
+Мебельная  фабрика выпускает столы, стулья, бюро и книжные шкафы. При изготовлении используются два типа досок, причем фабрика имеет в наличии 1500 м досок первого типа и 1000 м досок второго типа. Кроме того, заданы трудовые ресурсы в количестве 800 чел/час. В таблице приводятся нормативы затрат каждого из видов ресурсов на изготовление 1 ед изделия и прибыль от реализации 1  ед  изделия.
+
+\begin{table}[htb]
+	\begin{tabularx}{\textwidth}{|X|c|c|c|c|}
+	\hline 
+	\multirow{2}{*}{Ресурсы} & \multicolumn{4}{c|}{Затраты на 1 ед изделия} \\ 
+	\hhline{~----}
+	{} & столы & стулья & бюро & Книжные шкафы \\ 
+	\hline 
+	Доски первого типа, м & 5 & 1 & 9 & 12 \\ 
+	\hline 
+	Доски второго типа, м & 2 & 3 & 4 & 1 \\ 
+	\hline 
+	Трудовые ресурсы, чел/час & 3 & 2 & 5 & 10 \\ 
+	\hline 
+	Прибыль, руб/шт & 12 & 5 & 15 & 10 \\ 
+	\hline 
+	\end{tabularx} 
+\caption{Нормативы затрат ресурсов на единицу изделия}
+\end{table}
+
+По этим исходным данным решить задачу определения оптимальный ассортимент, максимизирующий прибыль и выручку при следующих ценах изготавливаемую мебель:
+
+\begin{itemize}
+\item стол -- 32 руб;
+\item стул -- 15 руб;
+\item бюро -- 12 руб;
+\item книжный шкаф -- 80 руб.
+\end{itemize}
+
+
+%------------------------------------------------------------------------------
+
+\newpage
+\section{Решение задачи оценки показателей эффективности стохастической сети с использованием методики GERT. Выбор и использование математического пакета Matlab для решения сформулированной задачи.}
+% Вариант 13
+
+Дано:
+\begin{enumerate}
+	\item {Граф GERT-сети.
+
+	\begin{figure}[!h]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+	  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+
+	  \node[main node] (1) {1};
+	  \node[main node] (2) [above right of=1] {2};
+	  \node[main node] (3) [below of=1] {3};
+	  \node[main node] (4) [below of=2] {4};
+	  \node[main node] (5) [below right of=2] {5};
+	  \node[main node] (6) [below of=5] {6};
+
+	  \path[every node/.style={font=\sffamily\small}]
+		(1)	edge node [left] {0,5} (2)
+			edge node [left] {0,5} (4)
+		(2)	edge node [left] {} (5)
+		(3)	edge node [left] {0,6} (1)
+			edge [loop below] node {0,4} (3)
+		(4)	edge node [left] {0,1} (2)
+			edge node [left] {0,3} (3)
+			edge node [left] {0,2} (5)
+			edge node [left] {0,4} (6)
+		(5)	edge node [left] {} (6);
+	\end{tikzpicture}
+	\end{figure}
+}	
+	
+	\item Каждой дуге-работе $(i,j)$ поставлены в соответствие следующие данные:
+	\begin{enumerate}
+		\item Закон распределения времени выполнения работы. Будем считать его нормальным.
+		\item Параметры закона распределения (математическое ожидание $M$ и дисперсия $D$).
+		\item Вероятность $P_{ij}$ выполнения работы, показанная на графе.
+	\end{enumerate}
+\end{enumerate}
+
+\begin{table}[htb]
+\centering
+	\begin{tabular}{|c|c|c|c|}
+	\hline 
+	Начальная вершина & Конечная вершина & $M$ & $D$ \\ 
+	\hline 
+	1 & 2 & 12 & 9 \\ 
+	\hline 
+	1 & 4 & 28 & 16 \\ 
+	\hline 
+	2 & 5 & 14 & 9 \\ 
+	\hline 
+	3 & 1 & 11 & 4 \\ 
+	\hline 
+	3 & 3 & 33 & 16 \\ 
+	\hline 
+	4 & 2 & 11 & 4 \\ 
+	\hline 
+	4 & 3 & 33 & 25 \\ 
+	\hline 
+	4 & 5 & 45 & 25 \\ 
+	\hline 
+	4 & 6 & 23 & 16 \\ 
+	\hline 
+	5 & 6 & 43 & 25 \\ 
+	\hline 
+	\end{tabular} 
+\caption{Параметры закона распределения для дуг графа}
+\end{table}
+
+Найти:
+\begin{enumerate}
+	\item Вероятность выхода в завершающий узел графа (для всех вариантов узел 6).
+	\item Математическое ожидания.
+	\item Дисперсию времени выхода процесса в завершающий узел графа.
+\end{enumerate}
+
+Перечислить все петли всех порядков, обнаруженные на графе, выписать уравнение Мейсона, получить решение для $W_E(s)$ и найти требуемые параметры. Примерно так, как это сделано в примере на стр. 403 -- 409 книги Филипса и Гарсиа «Методы анализа сетей»
+
+%------------------------------------------------------------------------------
+
+\newpage
+\section{Поиск оптимальной стратегии принятия решений с использованием марковских моделей.}
+% Вариант 26
+
+Пусть имеется машина (станок), которая обслуживается периодически один раз в час. В каждый момент она может находиться в одном из двух состояний: рабочем (состояние 1) и нерабочем (состояние 2). Если машина на некотором шаге проработала непрерывно 1 час, то доход равен 3 рублям. При этом вероятность остаться на следующем шаге в состоянии 1 равна 0,7, а вероятность перейти в состояние 2 равна 0,3. Если машина отказала на некотором шаге, то её можно отремонтировать двумя способами. Первый является ускоренным, требует затрат в 2 рубля (доход равен -2 рубля) и обеспечивает переход в состояние 1 с вероятностью в 0,6. Второй, обычный способ требует затрат в 1 рубль и обеспечивает переход в состояние 1 с вероятностью 0,4.
+
+Найти оптимальную стратегию для $N=\infty$ методом итераций по стратегиям, и перечислить все стационарные стратегии; построить марковскую модель принятия решений.
+
+% стр 273
+
+%------------------------------------------------------------------------------
+
+\newpage
+\section{Поиск оптимальных параметров сети систем массового обслуживания.}
+% Вариант 154, задача 5
+
+Минимизировать стоимость ССМО при ограничении на среднее число заявок в сети
+
+\begin{gather*}
+min\{F(u) = \sum\limits_{j=1}^n \sum\limits_{k=1}^{n_j} f_{jk} u_{jk} = \sum\limits_{j=1}^n \sum\limits_{k=1}^{n_j} (m_{jk} * \mu_{jk}) * u_{jk} \}
+\end{gather*} 
+
+$ L(u) = \sum\limits_{j=1}^n L_{jk} u_{jk}$,
+
+$ u_{jk} =
+  \begin{cases}
+    0,\\
+    1
+ \end{cases}$,
+ 
+Дано многоканальная сеть Джексона:
+
+\begin{gather*}
+\{ \lambda_0, \{jk\} - \text{набор альтернатив}, Q=\{q_{ij}\}_{i=\overline{0,n}, j=\overline{0,n}}, L(u) \}
+\end{gather*} 
+
+$L(u) = 4$, (предельное число заявок в сети)
+
+$\lambda_0 = 6$,
+
+$Q=\{q_{ij}\}_{i=\overline{0,n}, j=\overline{0,n}} = \begin{tabular}{|c|c|c|c|c|}
+\hline 
+0 & 0,2 & 0,7 & 0 & 0,1 \\ 
+\hline 
+0,1 & 0 & 0,1 & 0,2 & 0,6 \\ 
+\hline 
+0,5 & 0,1 & 0 & 0,2 & 0,2 \\ 
+\hline 
+0 & 0,2 & 0,8 & 0 & 0 \\ 
+\hline 
+0,3 & 0,2 & 0,2 & 0,3 & 0 \\ 
+\hline 
+\end{tabular} $.
+
+Самостоятельно сформировать набор альтернатив (по 2 альтернативы на каждый узел, обеспечивающих установивший режим в узле).
+
+Решить задачу 5 двумя способами:
+
+\begin{itemize}
+\item В соответствии с алгоритмом 5
+\item Как задачу дискретного линейного программирования (например, с использованием Матлабовской команды Linprog).
+\end{itemize}
+
+%------------------------------------------------------------------------------
+
+%\input{conclusion}
+\newpage
+\section*{Заключение}
+\addcontentsline{toc}{section}{Заключение}
+
+%------------------------------------------------------------------------------
+
+%\input{literature}
+\newpage
+\section*{Список используемой литературы}
+\addcontentsline{toc}{section}{Список используемой литературы}
+
+1.  Филипс и Гарси «Методы анализа сетей»
+
+2. Макаров И.М., и др. Теория выбора и принятия решений. М. Наука. 1982. — 328 с.
+
+%------------------------------------------------------------------------------
+
+\end{document}
