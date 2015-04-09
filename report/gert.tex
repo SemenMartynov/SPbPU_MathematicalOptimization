@@ -4,7 +4,7 @@
 \subsection{Постановка задачи}
 Дано:
 \begin{enumerate}
-	\item {Граф GERT-сети.
+	\item {Граф GERT-сети (рисунок 1).
 
 	\begin{figure}[!h]
 	\centering
@@ -30,6 +30,7 @@
 			edge node [left] {0,4} (6)
 		(5)	edge node [left] {} (6);
 	\end{tikzpicture}
+	\caption{Граф GERT-сети.}
 	\end{figure}
 }	
 	
@@ -83,7 +84,7 @@
 \subsection{Ход работы}
 Решение:
 
-Замкнём граф дугой из вершины 6 в вершину 1.
+Замкнём граф дугой из вершины 6 в вершину 1 (рисунок 2).
 
 \begin{figure}[!h]
 	\centering
@@ -110,6 +111,7 @@
 		(5)	edge node [left] {} (6)
 		(6)	edge [red, bend left] node [left] {$\frac{1}{W_E}$} (1);
 	\end{tikzpicture}
+	\caption{Замкнутый граф GERT-сети.}
 \end{figure}
 
 Петли первого порядка:
@@ -211,6 +213,7 @@ $p_E=W_E (0)$.
 
 \lstinputlisting[language=Matlab, caption={Код для вычисления заданных выражений}]{../task2/main.m}
 
+\newpage
 
 Результаты работы представлены в листинге 8.
 
