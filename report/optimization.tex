@@ -154,8 +154,8 @@ $b =
   -12500
 \end{pmatrix}$
 
+\newpage
 \lstinputlisting[language=Matlab, caption={Поиск оптимального решения для максимизация прибыли}]{../task1/max_profit.m}
-
 
 Результат:
 \begin{itemize}
@@ -202,6 +202,7 @@ $f_2=((32x_1+15x_2+12x_3+80x_4 )^2/12500)^{-1}$;
 
 \lstinputlisting[language=Matlab, caption={Содержание файла maxmin.m}]{../task1/maxmin.m}
 
+\newpage
 \lstinputlisting[language=Matlab, caption={Содержание файла funminmax.m}]{../task1/funminmax.m}
 
 Так как в среде Matlab реализована только функция fminimax, которая минимизирует наихудшие значения системы функций нескольких переменных, начиная со стартовой оценки ($x_0$), то для реализации максиминной свертки необходимо в fminimax передавать функции, возведенные в степень "-1" (функция funminmax).
@@ -316,6 +317,7 @@ x = fgoalattain(fun, $x_0$, goal, weight):
 
 Goal =(15855000 10240038400036 68000000 38080000 4900000) 
 
+\newpage
 Веса:
 
 weight=abs(goal) -- для того, чтобы приближение к критериям было одинаково
