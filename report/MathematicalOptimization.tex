@@ -238,6 +238,22 @@ $Q=\{q_{ij}\}_{i=\overline{0,n}, j=\overline{0,n}} = \begin{tabular}{|c|c|c|c|c|
 
 \subsection{Алгоритм решения}
 
+\begin{enumerate}
+	\item Найти $\lambda_i, j = 1. \dots, m$ -- скорость прихода задач в узел $j$.\\
+	$\lambda_j = \lambda_{0j} + \sum\limits_{i=1}^n q_{ij}\lambda_i$, при $j=1,\dots,n$\\
+	$\lambda_{ij}=\lambda_i q_{ij}$
+	\item Возьмем произвольный набор альтернатив для каждого узла.\\
+	$[(m_j^1,\mu_j^1),(m_j^1,\mu_j^1),\dots,(m_j^k,\mu_j^k)]$
+	\item $p_j$ расчитывается по следующей формуле\\
+	$p_j = \frac{\lambda_j}{\mu_j m_j}$
+	\item Вычислим $E(W_{qj})$:\\
+	$E(W_{qj}) = \frac{(m_j p_j)^{m_j} \pi(0)}{\mu_j m_j (1-p_j)^2 m_j!}$, где
+	$\pi(0) = \{\sum\limits_{t=0}^{m_j - 1} \frac{(m_j p_j)^t}{t!} + \frac{(m_j p_j) ^ m_j}{(1-p_j)m_j!}  \}^{-1}$
+	\item Найдем $L_j$ -- число заявок в j-ом узле по формуле:\\
+	$L_j = [E(W_{qj} + E(S_j)] \lambda_i$, где $E(S_j)= \frac{1}{\mu}$
+	 
+\end{enumerate}
+
 \subsection{Решение}
 
 %------------------------------------------------------------------------------
